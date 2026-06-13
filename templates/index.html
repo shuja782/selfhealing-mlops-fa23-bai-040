@@ -1,0 +1,25 @@
+<!-- Required element IDs: text-input, submit-btn, result-output -->
+<!DOCTYPE html><html lang='en'><head>
+ <meta charset='UTF-8'><title>Sentiment Analyzer</title>
+ <style>
+ body{font-family:Arial,sans-serif;max-width:600px;margin:60px auto;}
+ input[type=text]{width:100%;padding:10px;font-size:16px;margin:10px 0;}
+ button{padding:10px 24px;background:#1F3864;color:white;font-size:16px;}
+ #result-output{margin-top:20px;font-size:20px;font-weight:bold;}
+ .positive{color:#0a7c0a;} .negative{color:#cc0000;}
+ </style></head><body>
+ <h1>Sentiment Analyzer</h1>
+ <input type='text' id='text-input' placeholder='Enter a sentence...' />
+ <button id='submit-btn' onclick='analyze()'>Analyze Sentiment</button>
+ <div id='result-output'></div>
+ <script>
+ async function analyze() {
+ const text = document.getElementById('text-input').value.trim();
+ const res = await fetch('/predict',{method:'POST',
+ headers:{'Content-Type':'application/json'},body:JSON.stringify({text})});
+ const data = await res.json();
+ const el = document.getElementById('result-output');
+ el.textContent = data.label + ' — Confidence: '+(data.confidence*100).toFixed(1)+'%';
+ el.className = data.label==='POSITIVE'?'positive':'negative';
+ }
+ </script></body></html>
