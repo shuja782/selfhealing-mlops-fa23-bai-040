@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sentiment-blue-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: sentiment-api
+      slot: blue
+  template:
+    metadata:
+      labels:
+        app: sentiment-api
+        slot: blue
+    spec:
+      containers:
+        - name: sentiment-api
+          image: shuja782/sentiment-api:unstable
+          ports:
+            - containerPort: 5000
+          volumeMounts:
+            - name: logs-volume
+              mountPath: /app/logs
+      volumes:
+        - name: logs-volume
+          persistentVolumeClaim:
+            claimName: sentiment-logs-pvc
