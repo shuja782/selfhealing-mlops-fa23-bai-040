@@ -1,0 +1,11 @@
+groups:
+  - name: model_drift_alerts
+    rules:
+      - alert: ModelConfidenceDrift
+        expr: prediction_confidence_score < 0.63
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Model confidence has dropped below threshold"
+          description: "prediction_confidence_score has been below 0.63 for more than 1 minute."
